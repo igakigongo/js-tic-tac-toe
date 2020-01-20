@@ -1,0 +1,13 @@
+:root {
+  --font-custom: 'Sacramento', cursive;
+}
+
+body {
+  background-color: #F5F5F6;
+}
+
+h1 {
+  font-family: var(--font-custom);
+  font-size: 4.5rem;
+  text-shadow: 2px 2px #689f38;
+}
