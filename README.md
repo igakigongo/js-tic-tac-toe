@@ -3,7 +3,7 @@ An implementation of the Tic Tac Toe game using JavaScript - Exploring Modules (
 
 ## Tasks (Description of expectations)
 
-- The project has been set up with HTML, CSS and Javascript files.
+- The project has been set up with HTML, CSS and Javascript files as shown below.
 
 ```
   src 
