@@ -95,8 +95,8 @@ const gameBoard = (function() {
 	});
 
 	return {
-		freeSlots: function(){
-			return totalSlots() - totalSlotsFilled()
+		freeSlots: function() {
+			return totalSlots() - totalSlotsFilled();
 		},
 		reset,
 		totalSlots,

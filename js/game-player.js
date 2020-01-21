@@ -5,7 +5,7 @@
  */
 const createPlayer = function(name, symbol) {
 	if (!name) throw "Invalid player name";
-  if (!symbol) throw "Invalid player symbol";
+	if (!symbol) throw "Invalid player symbol";
 
 	/**
 	 * Check for equality without using memory references
@@ -16,20 +16,20 @@ const createPlayer = function(name, symbol) {
 		const props = Object.getOwnPropertyNames(other);
 		if (!props.includes("name") && !props.includes("symbol")) return false;
 		return other["name"] === name && other["symbol"] === symbol;
-  }
-  
-  function toString(){
-    return `${name} using symbol: ${symbol}`;
-  }
+	}
+
+	function toString() {
+		return `${name} using symbol: ${symbol}`;
+	}
 
 	return {
-    *[Symbol.iterator]() {
-      yield name;
-      yield symbol;
-    },
+		*[Symbol.iterator]() {
+			yield name;
+			yield symbol;
+		},
 		equals,
 		name,
-    symbol,
-    toString
+		symbol,
+		toString
 	};
 };
