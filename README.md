@@ -12,20 +12,125 @@ An implementation of the Tic Tac Toe game using JavaScript - Exploring Modules (
     |-- js  (directory with all the javascript files)
 ```
 
+- The gameboard is stored as an array inside of a Gameboard object.
+
+```js
+  const slots = new Array(9);
+```
+
+- The players are also stored as instances of objects created using the `createPlayer` factory function.
+
+```js
+  /**
+   * Factory for creating players to use in the game
+   * @param {String} name
+   * @param {String} symbol
+   */
+  const createPlayer = function(name, symbol) {
+    if (!name) throw "Invalid player name";
+    if (!symbol) throw "Invalid player symbol";
+
+    /**
+     * Check for equality without using memory references
+     * @param {Player} other
+     */
+    function equals(other) {
+      if (!other) return false;
+      const props = Object.getOwnPropertyNames(other);
+      if (!props.includes("name") && !props.includes("symbol")) return false;
+      return other["name"] === name && other["symbol"] === symbol;
+    }
+    
+    function toString(){
+      return `${name} using symbol: ${symbol}`;
+    }
+
+    return {
+      *[Symbol.iterator]() {
+        yield name;
+        yield symbol;
+      },
+      equals,
+      name,
+      symbol,
+      toString
+    };
+  };
+```
+
+- The `UI Controller` object is used to control the flow of the game itself. It's design is based off an Immediately Invoked Function Expression, ensuring a single instance with encapsulation of most of the DOM Manipulation Logic
+
+- The `UI Controller` constantly checks if a game is won, most of the work involved in doing this is delagated to the ```Game Board``` which can compute the winning symbol. Check the sample win function listed below
+
 ```js
 /**
-- Store the gameboard as an array inside of a Gameboard object, so start there! Your players are also going to be stored in objects… and you’re probably going to want an object to control the flow of the game itself.
+ * Evalute the winning symbol
+ */
+function winningSymbol() {
+  const totalSlotsFilledIn = totalSlotsFilled();
 
-  - Your main goal here is to have as little global code as possible. Try tucking everything away inside of a module or factory. Rule of thumb: if you only ever need ONE of something (gameBoard,displayController), use a module. If you need multiples of something (players!), create them with factories.
+  if (totalSlotsFilledIn < MIN_MOVES_FOR_WIN_EVALUATION) {
+    return null;
+  }
 
-- Set up your HTML and write a JavaScript function that will render the contents of the gameboard array to the webpage (for now you can just manually fill in the array with "X"s and "O"s)
+  const symbolsUsedInGame = symbolsUsed();
+  for (const symbol of symbolsUsedInGame) {
+    // check for the winner based on what they played
+    const won = winningMoves.reduce(function(aState, cMove) {
+      aState |= cMove.every(function(value) {
+        return symbol === slots[value];
+      });
 
-- Build the functions that allow players to add marks to a specific spot on the board, and then tie it to the DOM, letting players click on the gameboard to place their marker. Don’t forget the logic that keeps players from playing in spots that are already taken!
+      return aState;
+    }, false);
 
-  - Think carefully about where each bit of logic should reside. Each little piece of functionality should be able to fit in the game, player or gameboard objects.. but take care to put them in “logical” places. Spending a little time brainstorming here can make your life much easier later!
+    if (won) {
+      return symbol;
+    }
+  }
 
-- Build the logic that checks for when the game is over! Should check for 3-in-a-row and a tie.
+  return null;
+}
+```
+## Communication Style Between Modules
+Although it's true that Immediately Invoked Function Expressions can be invoked from anywhere since I added them to the global scope. I have ensured that I have minimized this kind of communication and instead favoured use of `Events`. Generally speaking I can say the style of Event Driven Programming used here is very similar to `Event Carried State Transfer`. Please refer to the listing below
 
+```js
+  cell.addEventListener("click", function(evt) {
+    const { symbol } = currentPlayer;
+    const { value } = evt.target.dataset;
+    const event = new CustomEvent(events.MOVE_PLAYED, { detail: { symbol, value } });
+    controllerRef.dispatchEvent(event);
+  });
+```
+
+Instead of calling into module's reference from the global scope, I have simply dispatched an event, that any other handler with an associated handler can listed for.
+Below is the example of a listener, that was used to handle this event.
+
+```js
+  gameBoardRef.addEventListener(events.MOVE_PLAYED, function(movePlayedEvent) {
+    const { symbol, value } = movePlayedEvent.detail;
+    const index = +value;
+    let event;
+
+    if (!slots[index]) {
+      slots[index] = symbol;
+      event = new CustomEvent(events.SYMBOL_PLACED, { detail: movePlayedEvent.detail });
+    } else {
+      event = new CustomEvent(events.SYMBOL_PLACEMENT_REJECTED, {
+        detail: {
+          value
+        }
+      });
+    }
+    gameBoardRef.dispatchEvent(event);
+  });
+```
+
+NOTE: I preferred this kind of style because it leads to excellent `decoupling of Event Consumers from Producers`.
+
+```js
+/*
 - Clean up the interface to allow players to put in their names, include a button to start/restart the game and add a display element that congratulates the winning player!
 
 - Optional - If you’re feeling ambitious create an AI so that a player can play against the computer!
