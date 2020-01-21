@@ -1,3 +1,6 @@
+/* exported gameBoard */
+/* global events */
+
 /**
  * Create a board as soon as the game is loaded or the DOM is ready
  */
