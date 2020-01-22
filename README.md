@@ -104,8 +104,7 @@ Although it's true that Immediately Invoked Function Expressions can be invoked 
   });
 ```
 
-Instead of calling into module's reference from the global scope, I have simply dispatched an event, that any other handler with an associated handler can listed for.
-Below is the example of a listener, that was used to handle this event.
+Instead of calling a module's reference from the global scope, I have simply dispatched an event any properly set up Event Handler can handle. Below is the example of a listener or `EventHandler` that was used to handle this `Event`.
 
 ```js
   gameBoardRef.addEventListener(events.MOVE_PLAYED, function(movePlayedEvent) {
@@ -127,15 +126,4 @@ Below is the example of a listener, that was used to handle this event.
   });
 ```
 
-NOTE: I preferred this kind of style because it leads to excellent `decoupling of Event Consumers from Producers`.
-
-```js
-/*
-- Clean up the interface to allow players to put in their names, include a button to start/restart the game and add a display element that congratulates the winning player!
-
-- Optional - If you’re feeling ambitious create an AI so that a player can play against the computer!
-Start by just getting the computer to make a random legal move.
-Once you’ve gotten that, work on making the computer smart. It is possible to create an unbeatable AI using the minimax algorithm (read about it here, some googling will help you out with this one)
-If you get this running definitely come show it off in the chatroom. It’s quite an accomplishment!
-*/
-```
+NOTE: I preferred this kind of style because it leads to excellent `decoupling of Event Producers and Producers`.

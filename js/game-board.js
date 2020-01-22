@@ -21,13 +21,6 @@ const gameBoard = (function() {
 	];
 
 	/**
-	 * Reset the board
-	 */
-	function reset() {
-		slots.fill(null);
-	}
-
-	/**
 	 * Get the total slots of the board
 	 */
 	function totalSlots() {
@@ -97,11 +90,18 @@ const gameBoard = (function() {
 		gameBoardRef.dispatchEvent(event);
 	});
 
+	gameBoardRef.addEventListener(events.NEW_GAME_INITIATED, function(){
+		slots.fill(null);
+	});
+
+	gameBoardRef.addEventListener(events.RESTART_CURRENT_GAME, function(){
+		slots.fill(null);
+	});
+
 	return {
 		freeSlots: function() {
 			return totalSlots() - totalSlotsFilled();
 		},
-		reset,
 		totalSlots,
 		winningSymbol
 	};
