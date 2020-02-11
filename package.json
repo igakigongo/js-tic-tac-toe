@@ -1,0 +1,36 @@
+{
+  "name": "js-tic-tac-toe",
+  "version": "1.0.0",
+  "description": "An implementation of the TicTacToe game using JavaScript",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/igakigongo/js-tic-tac-toe.git"
+  },
+  "keywords": [
+    "JavaScript",
+    "IIFE",
+    "Module",
+    "Pattern",
+    "TicTacToe",
+    "Factory",
+    "Functions",
+    "JS"
+  ],
+  "author": "Edward Iga Kigongo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/igakigongo/js-tic-tac-toe/issues"
+  },
+  "homepage": "https://github.com/igakigongo/js-tic-tac-toe#readme",
+  "devDependencies": {
+    "eslint-config-airbnb-base": "^14.0.0"
+  },
+  "dependencies": {
+    "eslint": "^6.8.0",
+    "eslint-plugin-import": "^2.20.1"
+  }
+}
