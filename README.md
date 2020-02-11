@@ -1,6 +1,9 @@
 # TicTacToe
 An implementation of the Tic Tac Toe game using JavaScript - Exploring Modules (IIFE) and Factory Functions
 
+## Demo
+For a reference to the demo please visit this [link](https://raw.githack.com/igakigongo/js-tic-tac-toe/feature/functional-tic-tac-toe-game/index.html)
+
 ## Tasks (Description of expectations)
 
 - The project has been set up with HTML, CSS and Javascript files as shown below.
