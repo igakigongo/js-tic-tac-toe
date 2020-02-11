@@ -5,6 +5,7 @@
 /**
  * Create a board as soon as the game is loaded or the DOM is ready
  */
+/* eslint-disable-next-line no-unused-vars */
 const gameBoard = (function () {
   const gameBoardRef = this;
 
@@ -108,5 +109,3 @@ const gameBoard = (function () {
     winningSymbol,
   };
 }());
-
-export default gameBoard;

@@ -1,5 +1,6 @@
 /* exported events */
 
+/* eslint-disable-next-line no-unused-vars */
 const events = {
   CLEAR_TICKER: 'clear_ticker',
   CURRENT_PLAYER_CHANGED: 'current_player_changed',
@@ -12,5 +13,3 @@ const events = {
   SYMBOL_PLACED: 'symbol_placed',
   SYMBOL_PLACEMENT_REJECTED: 'symbol_rejected',
 };
-
-export default events;

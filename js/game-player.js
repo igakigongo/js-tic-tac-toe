@@ -6,6 +6,7 @@
  * @param {String} name
  * @param {String} symbol
  */
+/* eslint-disable-next-line no-unused-vars */
 const createPlayer = function (name, symbol) {
   if (!name) throw Error('Invalid player name');
   if (!symbol) throw Error('Invalid player symbol');
@@ -36,5 +37,3 @@ const createPlayer = function (name, symbol) {
     toString,
   };
 };
-
-export default createPlayer;
