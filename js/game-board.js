@@ -1,10 +1,11 @@
 /* exported gameBoard */
 /* global events */
+/* eslint func-names: ["error", "never"] */
 
 /**
  * Create a board as soon as the game is loaded or the DOM is ready
  */
-const gameBoard = (function() {
+const gameBoard = (function () {
   const gameBoardRef = this;
 
   const MIN_MOVES_FOR_WIN_EVALUATION = 5;
@@ -17,25 +18,25 @@ const gameBoard = (function() {
     [1, 4, 7],
     [2, 5, 8],
     [0, 4, 8],
-    [2, 4, 6]
+    [2, 4, 6],
   ];
 
   /**
-	 * Get the total slots of the board
-	 */
+  * Get the total slots of the board
+  */
   function totalSlots() {
     return slots.length;
   }
 
   function totalSlotsFilled() {
-    return slots.reduce(function(a, c) {
+    return slots.reduce((a, c) => {
       a += c ? 1 : 0;
       return a;
     }, 0);
   }
 
   function symbolsUsed() {
-    return slots.reduce(function(a, c) {
+    return slots.reduce((a, c) => {
       if (c && !a.includes(c)) {
         a.push(c);
       }
@@ -44,8 +45,8 @@ const gameBoard = (function() {
   }
 
   /**
-	 * Evalute the winning symbol
-	 */
+  * Evaluate the winning symbol
+  */
   function winningSymbol() {
     const totalSlotsFilledIn = totalSlotsFilled();
 
@@ -54,12 +55,12 @@ const gameBoard = (function() {
     }
 
     const symbolsUsedInGame = symbolsUsed();
-    for (const symbol of symbolsUsedInGame) {
+    for (let i = 0; i < symbolsUsedInGame.length;) {
       // check for the winner based on what they played
-      const won = winningMoves.reduce(function(aState, cMove) {
-        aState |= cMove.every(function(value) {
-          return symbol === slots[value];
-        });
+      const symbol = symbolsUsedInGame[i];
+      const won = winningMoves.reduce((aState, cMove) => {
+        // eslint-disable-next-line no-bitwise
+        aState |= cMove.every((value) => symbol === slots[value]);
 
         return aState;
       }, false);
@@ -67,12 +68,13 @@ const gameBoard = (function() {
       if (won) {
         return symbol;
       }
+      i += 1;
     }
 
     return null;
   }
 
-  gameBoardRef.addEventListener(events.MOVE_PLAYED, function(movePlayedEvent) {
+  gameBoardRef.addEventListener(events.MOVE_PLAYED, (movePlayedEvent) => {
     const { symbol, value } = movePlayedEvent.detail;
     const index = +value;
     let event;
@@ -83,26 +85,28 @@ const gameBoard = (function() {
     } else {
       event = new CustomEvent(events.SYMBOL_PLACEMENT_REJECTED, {
         detail: {
-          value
-        }
+          value,
+        },
       });
     }
     gameBoardRef.dispatchEvent(event);
   });
 
-  gameBoardRef.addEventListener(events.NEW_GAME_INITIATED, function(){
+  gameBoardRef.addEventListener(events.NEW_GAME_INITIATED, () => {
     slots.fill(null);
   });
 
-  gameBoardRef.addEventListener(events.RESTART_CURRENT_GAME, function(){
+  gameBoardRef.addEventListener(events.RESTART_CURRENT_GAME, () => {
     slots.fill(null);
   });
 
   return {
-    freeSlots: function() {
+    freeSlots() {
       return totalSlots() - totalSlotsFilled();
     },
     totalSlots,
-    winningSymbol
+    winningSymbol,
   };
-})();
+}());
+
+export default gameBoard;

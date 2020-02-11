@@ -1,21 +1,24 @@
 /* global createPlayer, events, gameBoard */
+/* eslint func-names: ["error", "never"] */
 
-const controller = (function() {
+const controller = (function () {
   const controllerRef = this;
   const boardShell = document.getElementById('board-shell');
 
-  let currentPlayer, playerOne, playerTwo;
+  let currentPlayer; let playerOne; let
+    playerTwo;
 
-  function clearGrid(){
-    while(boardShell.firstChild){
+  function clearGrid() {
+    while (boardShell.firstChild) {
       boardShell.removeChild(boardShell.firstChild);
     }
+    // eslint-disable-next-line no-use-before-define
     render();
   }
 
-  function createAndDispatchCurrentPlayerChangedEvent(){
+  function createAndDispatchCurrentPlayerChangedEvent() {
     const event = new CustomEvent(events.CURRENT_PLAYER_CHANGED, {
-      detail: { player: currentPlayer }
+      detail: { player: currentPlayer },
     });
     controllerRef.dispatchEvent(event);
   }
@@ -40,10 +43,9 @@ const controller = (function() {
     cell.style.fontSize = '1.5rem';
 
     cell.setAttribute('id', `cell-${key}`);
-    cell.addEventListener('click', function(evt) {
-
-      if (!currentPlayer){
-        window.alert('Please first set up the players');
+    cell.addEventListener('click', (evt) => {
+      if (!currentPlayer) {
+        window.alert('Please first set up the players'); // eslint-disable-line no-alert
         return;
       }
 
@@ -58,9 +60,7 @@ const controller = (function() {
   }
 
   function render() {
-    const cells = [...new Array(9).keys()].map(function(key) {
-      return createGridCell(key);
-    });
+    const cells = [...new Array(9).keys()].map((key) => createGridCell(key));
 
     boardShell.style.columnGap = '15px';
     boardShell.style.display = 'grid';
@@ -69,7 +69,7 @@ const controller = (function() {
     boardShell.append(...cells);
   }
 
-  controllerRef.addEventListener(events.NEW_GAME_INITIATED, function(){
+  controllerRef.addEventListener(events.NEW_GAME_INITIATED, () => {
     // Reset Players
     currentPlayer = null;
     playerOne = null;
@@ -77,7 +77,7 @@ const controller = (function() {
     clearGrid();
   });
 
-  controllerRef.addEventListener(events.PLAYER_NAMES_RECEIVED, function(evt) {
+  controllerRef.addEventListener(events.PLAYER_NAMES_RECEIVED, (evt) => {
     const [playerOneName, playerTwoName] = evt.detail;
     playerOne = createPlayer(playerOneName, 'X');
     playerTwo = createPlayer(playerTwoName, 'O');
@@ -85,13 +85,13 @@ const controller = (function() {
     createAndDispatchCurrentPlayerChangedEvent();
   });
 
-  controllerRef.addEventListener(events.RESTART_CURRENT_GAME, function(){
+  controllerRef.addEventListener(events.RESTART_CURRENT_GAME, () => {
     clearGrid();
     currentPlayer = playerOne;
     createAndDispatchCurrentPlayerChangedEvent();
   });
 
-  controllerRef.addEventListener(events.SYMBOL_PLACED, function(evt) {
+  controllerRef.addEventListener(events.SYMBOL_PLACED, (evt) => {
     const { symbol, value: index } = evt.detail;
 
     // Update the UI
@@ -113,20 +113,20 @@ const controller = (function() {
       const drawEvent = new Event(events.GAME_DRAWN);
       controllerRef.dispatchEvent(drawEvent);
       return;
-    } 
-		
+    }
+
     currentPlayer = currentPlayer.equals(playerOne) ? playerTwo : playerOne;
     createAndDispatchCurrentPlayerChangedEvent();
   });
 
-  controllerRef.addEventListener(events.SYMBOL_PLACEMENT_REJECTED, function(evt) {
+  controllerRef.addEventListener(events.SYMBOL_PLACEMENT_REJECTED, (evt) => {
     const index = +evt.detail.value;
-    window.alert(`The cell (${index + 1}) is already occupied`);
+    window.alert(`The cell (${index + 1}) is already occupied`); // eslint-disable-line no-alert
   });
 
   return {
-    render
+    render,
   };
-})();
+}());
 
 document.addEventListener('DOMContentLoaded', controller.render);

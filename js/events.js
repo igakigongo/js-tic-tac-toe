@@ -10,5 +10,7 @@ const events = {
   PLAYER_NAMES_RECEIVED: 'player_names_received',
   RESTART_CURRENT_GAME: 'restart_current_game',
   SYMBOL_PLACED: 'symbol_placed',
-  SYMBOL_PLACEMENT_REJECTED: 'symbol_rejected'
+  SYMBOL_PLACEMENT_REJECTED: 'symbol_rejected',
 };
+
+export default events;

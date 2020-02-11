@@ -12,7 +12,7 @@ An implementation of the Tic Tac Toe game using JavaScript - Exploring Modules (
     |-- js  (directory with all the javascript files)
 ```
 
-- The gameboard is stored as an array inside of a Gameboard object.
+- The game board is stored as an array inside of a GameBoard object.
 
 ```js
   const slots = new Array(9);
@@ -60,11 +60,11 @@ An implementation of the Tic Tac Toe game using JavaScript - Exploring Modules (
 
 - The `UI Controller` object is used to control the flow of the game itself. It's design is based off an Immediately Invoked Function Expression, ensuring a single instance with encapsulation of most of the DOM Manipulation Logic
 
-- The `UI Controller` constantly checks if a game is won, most of the work involved in doing this is delagated to the ```Game Board``` which can compute the winning symbol. Check the sample win function listed below
+- The `UI Controller` constantly checks if a game is won, most of the work involved in doing this is delegated to the ```Game Board``` which can compute the winning symbol. Check the sample win function listed below
 
 ```js
 /**
- * Evalute the winning symbol
+ * Evaluate the winning symbol
  */
 function winningSymbol() {
   const totalSlotsFilledIn = totalSlotsFilled();
@@ -127,3 +127,7 @@ Instead of calling a module's reference from the global scope, I have simply dis
 ```
 
 NOTE: I preferred this kind of style because it leads to excellent `decoupling of Event Producers and Producers`.
+
+## Authors/Contributors
+  - [Edward Iga Kigongo](github.com/igakigongo)
+
